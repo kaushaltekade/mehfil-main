@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --mehfil-gold: #C9A24D;
+  --mehfil-dark: #0F172A;
+  --mehfil-surface: #111827;
+}
+
+@layer base {
+  body {
+    @apply bg-mehfilDark text-white overflow-x-hidden;
+  }
+  
+  /* scroll-behavior: smooth intentionally removed — it delays getBoundingClientRect
+     updates and causes the canvas frame sequence to lag behind real scroll position */
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-opacity-20 backdrop-blur-lg bg-white/5 border border-white/10;
+  }
+  
+  .text-gold-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#C9A24D] via-[#F5EFE6] to-[#C9A24D];
+  }
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
