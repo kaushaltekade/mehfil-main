@@ -10,8 +10,8 @@ const config: Config = {
     extend: {
       colors: {
         mehfilGold: "#C9A24D",
-        mehfilDark: "#0F172A",
-        mehfilSurface: "#111827",
+        mehfilDark: "#050505",
+        mehfilSurface: "#141414",
       },
       fontFamily: {
         playfair: ["var(--font-playfair-display)"],

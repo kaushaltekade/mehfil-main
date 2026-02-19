@@ -7,7 +7,7 @@ export default function Navbar() {
             <div className="flex items-center justify-between rounded-full border border-white/10 bg-mehfilSurface/70 px-6 py-3 backdrop-blur-md shadow-2xl transition-all hover:bg-mehfilSurface/90">
                 {/* Logo */}
                 <div className="flex items-center gap-2">
-                    <span className="font-playfair text-2xl font-bold bg-gradient-to-r from-mehfilGold to-white bg-clip-text text-transparent">
+                    <span className="font-playfair text-2xl font-bold text-gold-gradient">
                         Mehfil
                     </span>
                 </div>

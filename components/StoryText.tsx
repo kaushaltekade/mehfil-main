@@ -64,9 +64,7 @@ export default function StoryText() {
 
                 {/* Section 4 */}
                 <motion.div style={{ opacity: opacity4, y: y4 }} className="absolute text-center px-4">
-                    <h2 className="text-5xl md:text-8xl font-playfair font-bold text-white drop-shadow-2xl mb-6">
-                        Discover Our <br />Properties
-                    </h2>
+
                     <div className="animate-bounce text-mehfilGold mt-8">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5" /></svg>
                     </div>

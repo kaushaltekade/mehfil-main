@@ -3,16 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --mehfil-gold: #C9A24D;
-  --mehfil-dark: #0F172A;
-  --mehfil-surface: #111827;
+  --mehfil-gold: #c9a24d;
+  --mehfil-dark: #050505;
+  --mehfil-surface: #141414;
 }
 
 @layer base {
   body {
     @apply bg-mehfilDark text-white overflow-x-hidden;
   }
-  
+
   /* scroll-behavior: smooth intentionally removed — it delays getBoundingClientRect
      updates and causes the canvas frame sequence to lag behind real scroll position */
   html {
@@ -24,19 +24,27 @@
   .glass {
     @apply bg-opacity-20 backdrop-blur-lg bg-white/5 border border-white/10;
   }
-  
+
   .text-gold-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#C9A24D] via-[#F5EFE6] to-[#C9A24D];
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#C9A24D] via-[#E6D5A8] to-[#C9A24D];
+    background-size: 200% auto;
+    animation: shine 4s linear infinite;
+  }
+
+  @keyframes shine {
+    to {
+      background-position: 200% center;
+    }
   }
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
