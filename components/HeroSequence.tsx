@@ -207,7 +207,7 @@ export default function HeroSequence() {
     return (
         <div
             ref={containerRef}
-            className="relative h-[700vh]"
+            className="relative h-[600vh]"
             style={{ backgroundColor: "#0F172A" }}
         >
             {/* Sticky canvas — this is the ONLY visual element in the hero */}

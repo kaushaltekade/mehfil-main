@@ -138,21 +138,25 @@ export default function Properties() {
             </div>
 
             <div className="flex flex-col gap-0">
-                <PropertyCard 
-                    index={1}
-                    title="Grand Mehfil"
-                    description="The epitome of royal luxury in the heart of the city. Grand Mehfil stands as a beacon of heritage, offering an experience that transcends time."
-                    image="/sequence/frame_191.jpg"
-                    alignment="left"
-                />
+                <div id="grand-mehfil">
+                    <PropertyCard 
+                        index={1}
+                        title="Grand Mehfil"
+                        description="The epitome of royal luxury in the heart of the city. Grand Mehfil stands as a beacon of heritage, offering an experience that transcends time."
+                        image="/main-photos/mehfil-hotel.jpg"
+                        alignment="left"
+                    />
+                </div>
                 
-                <PropertyCard 
-                    index={2}
-                    title="Mehfil Inn"
-                    description="Contemporary elegance for the modern traveler. Mehfil Inn blends sophistication with comfort, creating a perfect retreat for business and leisure."
-                    image="/main-photos/mehfil-inn2.jpg"
-                    alignment="right"
-                />
+                <div id="mehfil-inn">
+                    <PropertyCard 
+                        index={2}
+                        title="Mehfil Inn"
+                        description="Contemporary elegance for the modern traveler. Mehfil Inn blends sophistication with comfort, creating a perfect retreat for business and leisure."
+                        image="/main-photos/mehfil-inn2.jpg"
+                        alignment="right"
+                    />
+                </div>
             </div>
         </section>
     );

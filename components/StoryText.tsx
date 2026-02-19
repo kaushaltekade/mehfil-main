@@ -24,12 +24,10 @@ export default function StoryText() {
     const opacity3 = useTransform(scrollYProgress, [0.45, 0.55, 0.65, 0.75], [0, 1, 1, 0]);
     const y3 = useTransform(scrollYProgress, [0.45, 0.75], [50, -50]);
 
-    // Text 4: 75% - 100%
-    const opacity4 = useTransform(scrollYProgress, [0.7, 0.8, 1], [0, 1, 1]);
-    const y4 = useTransform(scrollYProgress, [0.7, 1], [50, 0]);
+
 
     return (
-        <div ref={containerRef} className="absolute top-0 left-0 w-full h-[700vh] pointer-events-none z-10">
+        <div ref={containerRef} className="absolute top-0 left-0 w-full h-[600vh] pointer-events-none z-10">
             <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
 
                 {/* Section 1 */}
@@ -62,13 +60,7 @@ export default function StoryText() {
                     </p>
                 </motion.div>
 
-                {/* Section 4 */}
-                <motion.div style={{ opacity: opacity4, y: y4 }} className="absolute text-center px-4">
 
-                    <div className="animate-bounce text-mehfilGold mt-8">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5" /></svg>
-                    </div>
-                </motion.div>
 
             </div>
         </div>

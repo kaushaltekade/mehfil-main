@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function BookingCTA() {
     return (
@@ -22,9 +23,11 @@ export default function BookingCTA() {
                     <p className="text-white/60 text-xl mb-12 max-w-2xl mx-auto">
                         Book your stay today and experience the timeless elegance of Mehfil Hotels.
                     </p>
-                    <Button variant="gold" size="lg" className="rounded-full px-12 py-8 text-xl shadow-2xl shadow-mehfilGold/20 hover:shadow-mehfilGold/40">
-                        Book Your Stay
-                    </Button>
+                    <Link href="#properties">
+                        <Button variant="gold" size="lg" className="rounded-full px-12 py-8 text-xl shadow-2xl shadow-mehfilGold/20 hover:shadow-mehfilGold/40">
+                            Start Your Journey
+                        </Button>
+                    </Link>
                 </motion.div>
             </div>
         </section>
