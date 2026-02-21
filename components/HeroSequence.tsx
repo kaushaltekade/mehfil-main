@@ -66,15 +66,18 @@ export default function HeroSequence() {
             w = cw;
             h = cw / imageRatio;
             x = 0;
-            y = (ch - h) / 2;
+            y = ch - h; // Align to bottom
         } else {
             w = ch * imageRatio;
             h = ch;
-            x = (cw - w) / 2;
+            x = (cw - w) / 2; // Center horizontally
             y = 0;
         }
 
         ctx.clearRect(0, 0, cw, ch);
+        // Fill canvas with hotel background color (just in case)
+        ctx.fillStyle = "#0F172A";
+        ctx.fillRect(0, 0, cw, ch);
         ctx.drawImage(img, x, y, w, h);
     }
 
@@ -154,7 +157,6 @@ export default function HeroSequence() {
         const dpr = window.devicePixelRatio || 1;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-        console.log("[HeroSequence] 🎬 Render loop started");
 
         let frameHandle: number;
 
@@ -165,10 +167,11 @@ export default function HeroSequence() {
                 return;
             }
 
-            const rect = container.getBoundingClientRect();
-            // How far the container's top edge has scrolled above the viewport
-            const scrolled = -rect.top;
-            // Total scrollable distance = full height minus one viewport
+            // Use window.scrollY + offsetTop so this works with Lenis smooth scroll.
+            // getBoundingClientRect() reflects Lenis's interpolated position, not real
+            // scroll progress, causing frames to stop updating mid-sequence.
+            const containerTop = container.offsetTop;
+            const scrolled = window.scrollY - containerTop;
             const scrollLength = container.offsetHeight - window.innerHeight;
 
             // Clamp progress to [0, 1]
@@ -177,15 +180,13 @@ export default function HeroSequence() {
                     ? Math.min(Math.max(scrolled / scrollLength, 0), 1)
                     : 0;
 
-            // Exact mapping: scrollProgress 0→1 maps to frame 0→191
             const frameIdx = Math.min(
-                Math.floor(progress * FRAME_COUNT),
+                Math.round(progress * LAST_FRAME),
                 LAST_FRAME
             );
 
             if (frameIdx !== lastFrameRef.current) {
                 lastFrameRef.current = frameIdx;
-                console.log(`[HeroSequence] Frame: ${frameIdx}`);
                 drawFrame(canvas, ctx, frameIdx);
             }
 
@@ -214,7 +215,7 @@ export default function HeroSequence() {
             <canvas
                 ref={canvasRef}
                 className="sticky top-0 left-0 block"
-                style={{ width: "100vw", height: "100vh" }}
+                style={{ width: "100%", height: "100vh" }}
             />
 
             {/* Loading overlay */}

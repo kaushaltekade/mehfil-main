@@ -10,7 +10,9 @@
 
 @layer base {
   body {
-    @apply bg-mehfilDark text-white overflow-x-hidden;
+    @apply bg-mehfilDark text-white;
+    /* Prevents horizontal rubber-band/overscroll without touching layout */
+    overscroll-behavior-x: none;
   }
 
   /* scroll-behavior: smooth intentionally removed — it delays getBoundingClientRect
@@ -19,6 +21,14 @@
     scroll-behavior: auto;
   }
 }
+
+/* Kill horizontal scrollbar only — height: 0 removes the horizontal track,
+   width is intentionally not set so the vertical scrollbar stays intact.
+   No overflow touched — layout, sticky, canvas sync all unaffected. */
+::-webkit-scrollbar {
+  height: 0; /* horizontal scrollbar height → gone */
+}
+
 
 @layer utilities {
   .glass {

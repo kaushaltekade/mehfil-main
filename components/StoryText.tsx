@@ -1,13 +1,25 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence } from "framer-motion";
+import CountUp from "@/components/CountUp";
 
 export default function StoryText() {
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start start", "end end"],
+    });
+
+    const [showStats, setShowStats] = useState(false);
+
+    useMotionValueEvent(scrollYProgress, "change", (latest) => {
+        // Show stats when scrollYProgress is between 0.05 and 0.18 (adjust as needed)
+        if (latest > 0.05 && latest < 0.18) {
+            setShowStats(true);
+        } else {
+            setShowStats(false);
+        }
     });
 
     // Text 1: 0% - 20%
@@ -31,14 +43,53 @@ export default function StoryText() {
             <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
 
                 {/* Section 1 */}
-                <motion.div style={{ opacity: opacity1, y: y1, scale: scale1 }} className="absolute text-center px-4">
-                    <h1 className="text-5xl md:text-8xl font-playfair font-bold text-white drop-shadow-2xl mb-4">
-                        Welcome to <span className="text-gold-gradient">Mehfil</span>
-                    </h1>
-                    <p className="text-xl text-white/80 font-inter max-w-xl mx-auto">
-                        Experience the art of luxury living.
-                    </p>
-                </motion.div>
+                <AnimatePresence>
+                    {showStats && (
+                        <motion.div
+                            key="section1-stats"
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -50 }}
+                            transition={{ duration: 0.5 }}
+                            style={{ opacity: opacity1, y: y1, scale: scale1 }}
+                            className="absolute text-center px-4"
+                        >
+                            <h1 className="text-5xl md:text-8xl font-playfair font-bold text-white drop-shadow-2xl mb-4">
+                                Welcome to <span className="text-gold-gradient">Mehfil</span>
+                            </h1>
+                            <motion.p
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.3, duration: 0.5 }}
+                                className="text-xl text-white/80 font-inter max-w-xl mx-auto mb-12"
+                            >
+                                Experience hospitality that has been perfected over generations.
+                                At Mehfil, you are not just a guest, you are royalty.
+                            </motion.p>
+
+                            <div className="grid grid-cols-3 gap-8 mt-12 w-full max-w-3xl border-t border-white/10 pt-8">
+                                <div>
+                                    <div className="text-4xl md:text-5xl font-playfair font-bold text-mehfilGold mb-2 flex justify-center">
+                                        <CountUp to={15} />+
+                                    </div>
+                                    <div className="text-white/60 text-sm uppercase tracking-widest">Years of Legacy</div>
+                                </div>
+                                <div>
+                                    <div className="text-4xl md:text-5xl font-playfair font-bold text-mehfilGold mb-2 flex justify-center">
+                                        <CountUp to={500} />+
+                                    </div>
+                                    <div className="text-white/60 text-sm uppercase tracking-widest">Rooms & Suites</div>
+                                </div>
+                                <div>
+                                    <div className="text-4xl md:text-5xl font-playfair font-bold text-mehfilGold mb-2 flex justify-center">
+                                        <CountUp to={2} />
+                                    </div>
+                                    <div className="text-white/60 text-sm uppercase tracking-widest">Iconic Locations</div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
                 {/* Section 2 */}
                 <motion.div style={{ opacity: opacity2, y: y2, scale: scale2 }} className="absolute text-center px-4">
