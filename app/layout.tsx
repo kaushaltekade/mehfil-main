@@ -9,6 +9,11 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: '--font-playfa
 export const metadata: Metadata = {
     title: "Mehfil Hotels | Luxury Redefined",
     description: "Experience the royal heritage and timeless luxury of Mehfil Hotels.",
+    icons: {
+        icon: "/favicon.png",
+        shortcut: "/favicon.png",
+        apple: "/favicon.png",
+    },
 };
 
 export default function RootLayout({
