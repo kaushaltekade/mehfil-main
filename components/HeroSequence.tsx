@@ -218,33 +218,7 @@ export default function HeroSequence() {
                 style={{ width: "100%", height: "100vh" }}
             />
 
-            {/* Loading overlay */}
-            {!allLoaded && (
-                <div
-                    className="fixed inset-0 z-50 flex flex-col items-center justify-center"
-                    style={{ backgroundColor: "rgba(15,23,42,0.92)" }}
-                >
-                    {/* Gold progress bar */}
-                    <div
-                        className="w-64 h-[2px] rounded-full overflow-hidden"
-                        style={{ backgroundColor: "rgba(201,162,77,0.2)" }}
-                    >
-                        <div
-                            className="h-full rounded-full transition-all duration-200"
-                            style={{
-                                width: `${pct}%`,
-                                backgroundColor: "#C9A24D",
-                            }}
-                        />
-                    </div>
-                    <p
-                        className="mt-4 text-sm tracking-[0.3em] uppercase"
-                        style={{ color: "#C9A24D", fontFamily: "var(--font-playfair-display, serif)" }}
-                    >
-                        Loading Experience&nbsp;&nbsp;{pct}%
-                    </p>
-                </div>
-            )}
+
         </div>
     );
 }
