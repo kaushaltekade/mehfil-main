@@ -11,11 +11,11 @@ export default function StoryText() {
         offset: ["start start", "end end"],
     });
 
-    const [showStats, setShowStats] = useState(false);
+    const [showStats, setShowStats] = useState(true);
 
     useMotionValueEvent(scrollYProgress, "change", (latest) => {
-        // Show stats when scrollYProgress is between 0.05 and 0.18 (adjust as needed)
-        if (latest > 0.05 && latest < 0.18) {
+        // Show stats from the very first frame (scroll = 0) up to 18%
+        if (latest >= 0 && latest < 0.18) {
             setShowStats(true);
         } else {
             setShowStats(false);
