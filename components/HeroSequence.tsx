@@ -31,8 +31,7 @@ export default function HeroSequence() {
 
         canvas.width = Math.round(w * dpr);
         canvas.height = Math.round(h * dpr);
-        canvas.style.width = `${w}px`;
-        canvas.style.height = `${h}px`;
+
 
         // Re-draw current frame after resize so the canvas isn't blank
         const ctx = canvas.getContext("2d");
@@ -214,8 +213,7 @@ export default function HeroSequence() {
             {/* Sticky canvas — this is the ONLY visual element in the hero */}
             <canvas
                 ref={canvasRef}
-                className="sticky top-0 left-0 block"
-                style={{ width: "100%", height: "100vh" }}
+                className="sticky top-0 left-0 block w-full h-[100vh] object-cover"
             />
 
 
