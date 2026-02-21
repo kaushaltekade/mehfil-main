@@ -80,60 +80,107 @@ export default function HeroSequence() {
         ctx.drawImage(img, x, y, w, h);
     }
 
-    // ─── Image preloading ──────────────────────────────────────────────────────
+    // ─── Image preloading & Render Loop ─────────────────────────────────────────
     useEffect(() => {
         let cancelled = false;
         let loaded = 0;
         const imgs: HTMLImageElement[] = new Array(FRAME_COUNT);
 
+        imagesRef.current = imgs; // Assign early so draw loops can read
+
+        // Initialize Render Loop immediately to pick up frames as they load
+        const canvas = canvasRef.current;
+        const ctx = canvas?.getContext("2d");
+        if (canvas && ctx) {
+            const dpr = window.devicePixelRatio || 1;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        let frameHandle: number;
+        const tick = () => {
+            if (!canvas || !ctx) {
+                frameHandle = requestAnimationFrame(tick);
+                return;
+            }
+
+            const container = containerRef.current;
+            if (!container) {
+                frameHandle = requestAnimationFrame(tick);
+                return;
+            }
+
+            const containerTop = container.offsetTop;
+            const scrolled = window.scrollY - containerTop;
+            const scrollLength = container.offsetHeight - window.innerHeight;
+
+            const progress = scrollLength > 0 ? Math.min(Math.max(scrolled / scrollLength, 0), 1) : 0;
+            const frameIdx = Math.min(Math.round(progress * LAST_FRAME), LAST_FRAME);
+
+            if (frameIdx !== lastFrameRef.current) {
+                // Only commit and draw the frame if it's completely loaded
+                const img = imagesRef.current[frameIdx];
+                if (img && img.complete && img.naturalWidth > 0) {
+                    lastFrameRef.current = frameIdx;
+                    drawFrame(canvas, ctx, frameIdx);
+                }
+            }
+
+            frameHandle = requestAnimationFrame(tick);
+        };
+        frameHandle = requestAnimationFrame(tick);
+        rafRef.current = frameHandle;
+
+        // Start loading frames sequentially: Frame 0 first
         const onSettled = (i: number) => {
             if (cancelled) return;
             loaded += 1;
             setLoadedCount(loaded);
 
             if (loaded === FRAME_COUNT) {
-                imagesRef.current = imgs;
                 isLoadedRef.current = true;
                 setAllLoaded(true);
-                console.log(
-                    "[HeroSequence] ✅ All 192 images loaded — render loop ready"
-                );
-
-                // Draw frame 0 immediately so canvas isn't blank
-                const canvas = canvasRef.current;
-                const ctx = canvas?.getContext("2d");
-                if (canvas && ctx) {
-                    const dpr = window.devicePixelRatio || 1;
-                    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-                    lastFrameRef.current = 0;
-                    drawFrame(canvas, ctx, 0);
-                }
+                console.log("[HeroSequence] ✅ All 192 images loaded");
             }
         };
 
-        for (let i = 0; i < FRAME_COUNT; i++) {
+        const loadFrameZero = () => {
             const img = new Image();
-            // Hint the browser to decode this image without blocking
-            img.decoding = "async";
-            img.src = getFramePath(i);
+            img.src = getFramePath(0);
 
-            img.onload = () => onSettled(i);
-            img.onerror = () => {
-                if (!cancelled) {
-                    console.error(`[HeroSequence] ❌ Failed: ${getFramePath(i)}`);
-                    onSettled(i);
+            const handleFrameZeroLoaded = () => {
+                if (cancelled) return;
+                imgs[0] = img;
+
+                // Draw frame 0 immediately as background if not scrolled yet
+                if (canvas && ctx && lastFrameRef.current === -1) {
+                    lastFrameRef.current = 0;
+                    drawFrame(canvas, ctx, 0);
+                }
+
+                onSettled(0);
+
+                // Now trigger network requests for the remaining frames
+                // This prevents network queue congestion so frame 0 loads instantly!
+                for (let i = 1; i < FRAME_COUNT; i++) {
+                    const nextImg = new Image();
+                    nextImg.decoding = "async";
+                    nextImg.src = getFramePath(i);
+                    nextImg.onload = () => onSettled(i);
+                    nextImg.onerror = () => onSettled(i);
+                    imgs[i] = nextImg;
                 }
             };
 
-            imgs[i] = img;
-        }
+            img.onload = handleFrameZeroLoaded;
+            img.onerror = handleFrameZeroLoaded; // proceed on success/fail
+        };
 
-        // Set ref immediately so any early scroll events can still access partially
-        // loaded array (we guard with img.complete inside drawFrame)
-        imagesRef.current = imgs;
+        loadFrameZero();
 
         return () => {
             cancelled = true;
+            cancelAnimationFrame(frameHandle);
+            rafRef.current = null;
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -144,63 +191,6 @@ export default function HeroSequence() {
         window.addEventListener("resize", resizeCanvas);
         return () => window.removeEventListener("resize", resizeCanvas);
     }, [resizeCanvas]);
-
-    // ─── Scroll → frame render loop ───────────────────────────────────────────
-    useEffect(() => {
-        if (!allLoaded) return;
-
-        const canvas = canvasRef.current;
-        const ctx = canvas?.getContext("2d");
-        if (!canvas || !ctx) return;
-
-        const dpr = window.devicePixelRatio || 1;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-
-        let frameHandle: number;
-
-        const tick = () => {
-            const container = containerRef.current;
-            if (!container) {
-                frameHandle = requestAnimationFrame(tick);
-                return;
-            }
-
-            // Use window.scrollY + offsetTop so this works with Lenis smooth scroll.
-            // getBoundingClientRect() reflects Lenis's interpolated position, not real
-            // scroll progress, causing frames to stop updating mid-sequence.
-            const containerTop = container.offsetTop;
-            const scrolled = window.scrollY - containerTop;
-            const scrollLength = container.offsetHeight - window.innerHeight;
-
-            // Clamp progress to [0, 1]
-            const progress =
-                scrollLength > 0
-                    ? Math.min(Math.max(scrolled / scrollLength, 0), 1)
-                    : 0;
-
-            const frameIdx = Math.min(
-                Math.round(progress * LAST_FRAME),
-                LAST_FRAME
-            );
-
-            if (frameIdx !== lastFrameRef.current) {
-                lastFrameRef.current = frameIdx;
-                drawFrame(canvas, ctx, frameIdx);
-            }
-
-            frameHandle = requestAnimationFrame(tick);
-        };
-
-        frameHandle = requestAnimationFrame(tick);
-        rafRef.current = frameHandle;
-
-        return () => {
-            cancelAnimationFrame(frameHandle);
-            rafRef.current = null;
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [allLoaded]);
 
     const pct = Math.round((loadedCount / FRAME_COUNT) * 100);
 

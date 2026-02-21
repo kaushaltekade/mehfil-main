@@ -23,6 +23,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
+            <head>
+                <link rel="preload" as="image" href="/sequence/frame_000.jpg" fetchPriority="high" />
+            </head>
             <body className={`${inter.variable} ${playfair.variable} font-sans`}>
                 <SmoothScroll />
                 {children}
