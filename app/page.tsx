@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 import Navbar from "@/components/Navbar";
 import HeroSequence from "@/components/HeroSequence";
 import StoryText from "@/components/StoryText";
@@ -14,6 +16,15 @@ import AwardsTicker from "@/components/AwardsTicker";
 import SectionTransitionWipes from "@/components/SectionTransitionWipes";
 
 export default function Home() {
+    useEffect(() => {
+        // Prevent the browser from automatically restoring the previous scroll position
+        if ("scrollRestoration" in history) {
+            history.scrollRestoration = "manual";
+        }
+        // Force scroll to top on mount (refresh)
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <main className="bg-mehfilDark min-h-screen text-white selection:bg-mehfilGold selection:text-mehfilDark">
             <ScrollProgress />
