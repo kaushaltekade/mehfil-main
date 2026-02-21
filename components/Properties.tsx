@@ -29,15 +29,15 @@ const PropertyCard = ({ property, index }: { property: PropertyProps, index: num
 
     // Default options for react-tilt
     const defaultOptions = {
-        reverse:        false,
-        max:            15,
-        perspective:    1000,
-        scale:          1.02,
-        speed:          1000,
-        transition:     true,
-        axis:           null,
-        reset:          true,
-        easing:         "cubic-bezier(.03,.98,.52,.99)",
+        reverse: false,
+        max: 15,
+        perspective: 1000,
+        scale: 1.02,
+        speed: 1000,
+        transition: true,
+        axis: null,
+        reset: true,
+        easing: "cubic-bezier(.03,.98,.52,.99)",
     };
 
     const CardContent = (
@@ -128,29 +128,29 @@ export default function Properties() {
     ];
 
     return (
-        <section ref={containerRef} id="properties" className="relative bg-gradient-to-b from-mehfilDark via-mehfilDark to-mehfilSurface py-20 overflow-hidden">
+        <section ref={containerRef} id="properties" className="relative bg-gradient-to-b from-mehfilDark via-mehfilDark to-mehfilSurface py-12 md:py-20 overflow-hidden scroll-mt-24">
             {/* Moving Light Background */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <motion.div 
-                    animate={{ 
+                <motion.div
+                    animate={{
                         opacity: [0.3, 0.6, 0.3],
                         scale: [1, 1.2, 1],
                         rotate: [0, 45, 0]
                     }}
-                    transition={{ 
+                    transition={{
                         duration: 10,
                         repeat: Infinity,
-                        ease: "easeInOut" 
+                        ease: "easeInOut"
                     }}
                     className="absolute top-[-50%] left-[-20%] w-[100vw] h-[100vw] rounded-full bg-gradient-radial from-mehfilGold/10 to-transparent blur-[100px]"
                 />
-                <motion.div 
-                    animate={{ 
+                <motion.div
+                    animate={{
                         opacity: [0.2, 0.5, 0.2],
                         scale: [1, 1.1, 1],
                         x: [0, 100, 0]
                     }}
-                    transition={{ 
+                    transition={{
                         duration: 15,
                         repeat: Infinity,
                         ease: "easeInOut",
@@ -169,7 +169,7 @@ export default function Properties() {
                     className="text-center"
                 >
                     <span className="text-mehfilGold/80 uppercase tracking-widest text-sm font-semibold mb-4 block">Our Collection</span>
-                    <h2 className="text-4xl md:text-6xl font-playfair font-bold text-white mb-6">
+                    <h2 className="text-3xl sm:text-4xl md:text-6xl font-playfair font-bold text-white mb-6">
                         Curated <span className="italic font-light text-mehfilGold">Sanctuaries</span>
                     </h2>
                 </motion.div>
@@ -178,7 +178,7 @@ export default function Properties() {
             <div className="flex flex-col gap-24 px-6 mb-24">
                 {propertiesData.map((property, index) => (
                     <div key={index} id={property.title.toLowerCase().replace(" ", "-")}>
-                        <PropertyCard 
+                        <PropertyCard
                             index={index}
                             property={property}
                         />

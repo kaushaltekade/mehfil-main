@@ -28,7 +28,7 @@ const amenities = [
 
 export default function Amenities() {
     return (
-        <section id="amenities" className="py-32 bg-mehfilSurface relative overflow-hidden">
+        <section id="amenities" className="py-16 md:py-32 bg-mehfilSurface relative overflow-hidden scroll-mt-24">
             {/* Background Decor */}
             <div className="absolute top-0 right-0 w-1/2 h-full bg-mehfilGold/5 blur-3xl rounded-full translate-x-1/2" />
 
@@ -40,7 +40,7 @@ export default function Amenities() {
                     viewport={{ once: true }}
                     className="text-center mb-20"
                 >
-                    <h2 className="text-4xl md:text-6xl font-playfair font-bold text-white mb-6">
+                    <h2 className="text-3xl sm:text-4xl md:text-6xl font-playfair font-bold text-white mb-6">
                         World-Class <span className="text-gold-gradient">Amenities</span>
                     </h2>
                 </motion.div>
