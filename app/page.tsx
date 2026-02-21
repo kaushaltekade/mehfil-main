@@ -4,7 +4,6 @@ import Navbar from "@/components/Navbar";
 import HeroSequence from "@/components/HeroSequence";
 import StoryText from "@/components/StoryText";
 import Properties from "@/components/Properties";
-import Amenities from "@/components/Amenities";
 import BookingCTA from "@/components/BookingCTA";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
@@ -34,7 +33,6 @@ export default function Home() {
                 <Properties />
                 <Gallery />
                 <Testimonials />
-                <Amenities />
                 <BookingCTA />
                 <Footer />
             </div>
